@@ -1,8 +1,8 @@
 const request = require('request');
 const cheerio = require('cheerio');
+const dataStorage = require('./dataStorage');
 
 request('https://news.ycombinator.com', function (error, response, html) {
-  console.log('html: ', html);
   if (!error && response.statusCode == 200) {
     let $ = cheerio.load(html);
     $('td.title').each((i, element) => {
@@ -14,7 +14,6 @@ request('https://news.ycombinator.com', function (error, response, html) {
       let points = $(subtext).eq(0).text();
       let userName = $(subtext).eq(1).text();
       let age = $(subtext).eq(2).text();
-      let comments = $(subtext).eq(5).text();
 
       let data = {
         rank: parseInt(rank),
@@ -22,12 +21,16 @@ request('https://news.ycombinator.com', function (error, response, html) {
         url,
         points: parseInt(points),
         userName,
-        age,
-        comments: parseInt(comments)
+        age
       };
-
-      console.log('data: ', data);
+      dataStorage.validate(data);
 
     });
   }
+  dataStorage.getData();
 });
+
+
+
+
+
