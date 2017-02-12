@@ -2,7 +2,7 @@ const request = require('request');
 const cheerio = require('cheerio');
 const dataStorage = require('./dataStorage');
 
-request('https://www.washingtonpost.com/news/innovations/wp/2017/02/10/ford-to-invest-1-billion-in-artificial-intelligence-for-your-car/?utm_term=.4efc72ece5bf', function (error, response, html) {
+request('https://www.washingtonpost.com/national/federal-agents-conduct-sweeping-immigration-enforcement-raids-in-at-least-6-states/2017/02/10/4b9f443a-efc8-11e6-b4ff-ac2cf509efe5_story.html', function (error, response, html) {
   if (!error && response.statusCode == 200) {
     let $ = cheerio.load(html);
     let title = $('h1').text();
@@ -18,5 +18,5 @@ request('https://www.washingtonpost.com/news/innovations/wp/2017/02/10/ford-to-i
     }
     dataStorage.validate(data);
   }
-  console.log(dataStorage.getData());
+  dataStorage.getData();
 });
