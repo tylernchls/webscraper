@@ -23,6 +23,7 @@ request('https://news.ycombinator.com', function (error, response, html) {
         userName,
         age
       };
+
       dataStorage.validate(data);
 
     });
