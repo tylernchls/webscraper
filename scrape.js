@@ -1,34 +1,21 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const dataStorage = require('./dataStorage');
+const MetaInspector = require('meta-scrape');
 
-request('https://news.ycombinator.com', function (error, response, html) {
-  if (!error && response.statusCode == 200) {
-    let $ = cheerio.load(html);
-    $('td.title').each((i, element) => {
-      let a = $(element).find('a.storylink');
-      let title = a.text();
-      let rank = a.parent().parent().text();
-      let url = a.attr('href');
-      let subtext = a.parent().parent().next().children('.subtext').children();
-      let points = $(subtext).eq(0).text();
-      let userName = $(subtext).eq(1).text();
-      let age = $(subtext).eq(2).text();
+//will scrape any meta data for any url
+let client = new MetaInspector("http://www.espn.com/nba/story/_/id/18700455/shane-battier-named-miami-heat-director-basketball-development-analytics", {});
 
-      let data = {
-        rank: parseInt(rank),
-        title,
-        url,
-        points: parseInt(points),
-        userName,
-        age
-      };
+client.on("fetch", function(){
+    console.log("keywords: " + client.keywords);
 
-      dataStorage.validate(data);
+});
 
-    });
-  }
-  dataStorage.getData();
+client.on("error", function(err){
+    console.log(error);
+});
+
+client.fetch();torage.getData();
 });
 
 
